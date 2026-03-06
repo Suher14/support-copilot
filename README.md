@@ -79,10 +79,10 @@ Example output includes:
 
 ## Demo Queries
 
-You can test the system with example support questions such as:
+Try asking questions like:
 
 - I was charged but my subscription is still inactive
 - I can't log in and the password reset email never arrives
-- I canceled my subscription but I was still billed
-- I think my account was hacked, what should I do?
-- Can you delete all my data under GDPR?
+- I canceled my subscription but was still billed
+- I think my account was hacked
+- Can you delete my data under GDPR?
