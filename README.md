@@ -48,9 +48,13 @@ Install dependencies:
 
 pip install -r requirements.txt
 
-Run the application:
+Run the CLI version:
 
 python3 main.py
+
+Run the Streamlit web app:
+
+streamlit run app.py
 
 ## Environment Variables
 
