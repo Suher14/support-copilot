@@ -6,12 +6,19 @@ st.set_page_config(page_title="AI Customer Support Copilot", page_icon="💬")
 
 st.title("💬 AI Customer Support Copilot")
 st.write("Ask a support question about billing, login, subscriptions, or security.")
+
 with st.sidebar:
     st.header("About")
     st.write(
-        "This demo shows a RAG-based AI Customer Support Copilot that retrieves "
-        "support documents and generates grounded responses."
+        "This demo shows a Retrieval-Augmented Generation (RAG) based "
+        "AI Customer Support Copilot that retrieves internal support "
+        "documents and generates grounded responses."
     )
+
+    if st.button("Reset Chat"):
+        st.session_state.messages = []
+        st.rerun()
+
 # session state for chat history
 if "messages" not in st.session_state:
     st.session_state.messages = []
@@ -31,23 +38,28 @@ if query:
     with st.chat_message("user"):
         st.markdown(query)
 
-    # guardrails
+    # guardrails check
     guardrail = check_guardrails(query)
 
     if guardrail:
         answer = guardrail
         sources = []
-
     else:
         answer, sources = rag_pipeline(query)
 
-    # display assistant response
+    # combine answer + sources
+    assistant_content = answer
+
+    if sources:
+        assistant_content += "\n\n**Sources:**\n"
+        for s in sources:
+            assistant_content += f"- {s}\n"
+
+    # display assistant message
     with st.chat_message("assistant"):
-        st.markdown(answer)
+        st.markdown(assistant_content)
 
-        if sources:
-            st.markdown("**Sources:**")
-            for s in sources:
-                st.write("-", s)
-
-    st.session_state.messages.append({"role": "assistant", "content": answer})
+    # save to chat history
+    st.session_state.messages.append(
+        {"role": "assistant", "content": assistant_content}
+    )
